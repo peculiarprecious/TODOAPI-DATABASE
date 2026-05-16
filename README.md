@@ -3,7 +3,7 @@
 A production quality RESTful API built with ASP.NET Core Web API and Entity Framework Core.
 Implements a full database-backed architecture with Models, DTOs, Services, comprehensive validation,
 standardized error handling, and proper HTTP status codes. Data is persisted using SQL Server LocalDB,
-ensuring todos are stored in database.
+ensuring todos are stored in database for data persistency.
 
 
 ## Tech Stack
@@ -254,3 +254,5 @@ All errors return this standardized format:
 
 Precious Nwajei
 GitHub: https://github.com/peculiarprecious
+
+![alt text](<Screenshot (763)-1.png>)
