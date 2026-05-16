@@ -9,7 +9,6 @@ namespace TODOAPI_DATABASE.Services
     public class TodoService : ITodoService
     {
 
-        private readonly List<TodoItem> _todos = new();
         private readonly ApplicationDBContext _appDBContext;
 
         public TodoService(ApplicationDBContext appDBcontext)
@@ -31,26 +30,28 @@ namespace TODOAPI_DATABASE.Services
             };
         }
 
-        // GET all
-        public List<TodoResponseDTO> GetAll()
+        // GET all — ToListAsync()
+        public async Task<List<TodoResponseDTO>> GetAll()
         {
-            return _appDBContext.TodoItems
-                 .AsEnumerable()
+            var todos = await _appDBContext.TodoItems
+                .ToListAsync();             
+
+            return todos
                 .Select(t => MapToResponse(t))
                 .ToList();
         }
 
-        // GET by id
-        public TodoResponseDTO? GetById(int id)
+        // GET by id — FindAsync()
+        public async Task<TodoResponseDTO?> GetById(int id)
         {
-            var todo = _appDBContext.TodoItems
-                .FirstOrDefault(t => t.Id == id);
+            var todo = await _appDBContext.TodoItems
+                .FindAsync(id);           
+
             if (todo == null) return null;
             return MapToResponse(todo);
         }
-
-        // POST - create
-        public TodoResponseDTO Create(CreateTodoDTO dto)
+        // POST 
+        public async Task<TodoResponseDTO> Create(CreateTodoDTO dto)
         {
             var todo = new TodoItem
             {
@@ -61,16 +62,19 @@ namespace TODOAPI_DATABASE.Services
                 DueDate = dto.DueDate,
                 Priority = dto.Priority
             };
+
             _appDBContext.TodoItems.Add(todo);
-            _appDBContext.SaveChanges();         
+            await _appDBContext.SaveChangesAsync();  
+
             return MapToResponse(todo);
         }
 
-        // PUT - update
-        public TodoResponseDTO? Update(int id, UpdateTodoDTO dto)
+        // PUT 
+        public async Task<TodoResponseDTO?> Update(int id, UpdateTodoDTO dto)
         {
-            var todo = _appDBContext.TodoItems
-                .FirstOrDefault(t => t.Id == id);
+            var todo = await _appDBContext.TodoItems
+                .FindAsync(id);             
+
             if (todo == null) return null;
 
             todo.Title = dto.Title;
@@ -79,19 +83,22 @@ namespace TODOAPI_DATABASE.Services
             todo.DueDate = dto.DueDate;
             todo.Priority = dto.Priority;
 
-            _appDBContext.SaveChanges();     
+            await _appDBContext.SaveChangesAsync(); 
+
             return MapToResponse(todo);
         }
 
-        // DELETE
-        public bool Delete(int id)
+        // DELETE 
+        public async Task<bool> Delete(int id)
         {
-            var todo = _appDBContext.TodoItems
-                .FirstOrDefault(t => t.Id == id);
+            var todo = await _appDBContext.TodoItems
+                .FindAsync(id);          
+
             if (todo == null) return false;
 
             _appDBContext.TodoItems.Remove(todo);
-            _appDBContext.SaveChanges();         
+            await _appDBContext.SaveChangesAsync(); 
+
             return true;
         }
 

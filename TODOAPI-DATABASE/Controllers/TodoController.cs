@@ -18,43 +18,43 @@ namespace TODOAPI_DATABASE.Controllers
             }
             // GET /api/todos
             [HttpGet]
-            public IActionResult GetAll()
+            public async Task<IActionResult> GetAll()
             {
-                var todos = _service.GetAll();
+                var todos = await _service.GetAll();
                 return Ok(todos);
 
             }
             // GET /api/todos/1
             [HttpGet("{id}")]
-            public IActionResult GetById(int id)
+            public async Task<IActionResult> GetById(int id)
             {
-                var todo = _service.GetById(id);
+                var todo = await _service.GetById(id);
                 if (todo == null)
                     return NotFound(BuildErrorResponse(400, $"Todo with id {id} not found"));
                 return Ok(todo);
             }
             // POST /api/todos
             [HttpPost]
-            public IActionResult CreateTodo([FromBody] CreateTodoDTO dto)
+            public async Task<IActionResult> CreateTodo([FromBody] CreateTodoDTO dto)
             {
                 if (!ModelState.IsValid)
                     return BadRequest(BuildErrorResponse(
                         400, "Validation failed", GetValidationErrors()
                     ));
-                var createTodo = _service.Create(dto);
+                var createTodo = await _service.Create(dto);
                 return CreatedAtAction(nameof(GetById), new { id = createTodo.Id }, createTodo);
             }
 
             // PUT /api/todos/1
             [HttpPut("{id}")]
-            public IActionResult UpdateToDo(int id, [FromBody] UpdateTodoDTO dto)
+            public async Task<IActionResult> UpdateToDo(int id, [FromBody] UpdateTodoDTO dto)
             {
                 if (!ModelState.IsValid)
                     return BadRequest(BuildErrorResponse(
                         400, "Validation failed", GetValidationErrors()
                     ));
 
-                var updateTodo = _service.Update(id, dto);
+                var updateTodo = await _service.Update(id, dto);
                 if (updateTodo == null)
                     return NotFound(BuildErrorResponse(
                          404, $"Todo with id {id} not found"
@@ -64,9 +64,9 @@ namespace TODOAPI_DATABASE.Controllers
             }
             // DELETE /api/todos/1
             [HttpDelete("{id}")]
-            public IActionResult DeleteById(int id)
+            public async Task<IActionResult> DeleteById(int id)
             {
-                var success = _service.Delete(id);
+                var success = await _service.Delete(id);
                 if (!success)
                     return NotFound(BuildErrorResponse(
                         404, $"Todo with id {id} not found"
