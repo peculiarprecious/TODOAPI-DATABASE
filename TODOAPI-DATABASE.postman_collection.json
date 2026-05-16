@@ -1,0 +1,270 @@
+{
+  "info": {
+    "name": "TODOAPI-DATABASE - Enhanced Todo API",
+    "_postman_id": "todoapi-database-collection",
+    "description": "Postman collection for Enhanced TODO API with Database - Week 12",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET All Todos (Empty List)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7180/api/Todo",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo"]
+        },
+        "description": "Get all todos - returns empty array when no todos exist. Expected: 200 OK with []"
+      },
+      "response": []
+    },
+    {
+      "name": "POST Create Todo (Valid Data)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Buy groceries\",\n  \"description\": \"Milk and eggs\",\n  \"dueDate\": \"2026-12-01T00:00:00\",\n  \"priority\": \"High\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7180/api/Todo",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo"]
+        },
+        "description": "Create a new todo with valid data. Expected: 201 Created"
+      },
+      "response": []
+    },
+    {
+      "name": "POST Create Todo (Invalid - Missing Title)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"\",\n  \"description\": \"Missing title test\",\n  \"dueDate\": \"2026-12-01T00:00:00\",\n  \"priority\": \"High\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7180/api/Todo",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo"]
+        },
+        "description": "Create todo with missing title. Expected: 400 Bad Request"
+      },
+      "response": []
+    },
+    {
+      "name": "POST Create Todo (Invalid - Past DueDate)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Valid Title\",\n  \"description\": \"Past due date test\",\n  \"dueDate\": \"2020-01-01T00:00:00\",\n  \"priority\": \"Medium\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7180/api/Todo",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo"]
+        },
+        "description": "Create todo with past due date. Expected: 400 Bad Request"
+      },
+      "response": []
+    },
+    {
+      "name": "POST Create Todo (Invalid - Wrong Priority)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Valid Title\",\n  \"description\": \"Wrong priority test\",\n  \"dueDate\": \"2026-12-01T00:00:00\",\n  \"priority\": \"Urgent\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7180/api/Todo",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo"]
+        },
+        "description": "Create todo with invalid priority. Expected: 400 Bad Request"
+      },
+      "response": []
+    },
+    {
+      "name": "GET Single Todo (Exists)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7180/api/Todo/1",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo", "1"]
+        },
+        "description": "Get todo by ID 1. Expected: 200 OK with todo object"
+      },
+      "response": []
+    },
+    {
+      "name": "GET Single Todo (404 Not Found)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7180/api/Todo/999",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo", "999"]
+        },
+        "description": "Get todo with non-existent ID. Expected: 404 Not Found"
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Update Todo (Valid)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Buy groceries and cook dinner\",\n  \"description\": \"Updated description\",\n  \"isCompleted\": true,\n  \"dueDate\": \"2026-12-01T00:00:00\",\n  \"priority\": \"Medium\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7180/api/Todo/1",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo", "1"]
+        },
+        "description": "Update todo with valid data. Expected: 200 OK with updated todo"
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Update Todo (Invalid Data)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"AB\",\n  \"description\": \"Short title test\",\n  \"isCompleted\": false,\n  \"dueDate\": \"2026-12-01T00:00:00\",\n  \"priority\": \"Urgent\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7180/api/Todo/1",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo", "1"]
+        },
+        "description": "Update todo with invalid data. Expected: 400 Bad Request"
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Todo (Success)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7180/api/Todo/1",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo", "1"]
+        },
+        "description": "Delete todo by ID. Expected: 204 No Content"
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Todo (404 Not Found)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7180/api/Todo/999",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "7180",
+          "path": ["api", "Todo", "999"]
+        },
+        "description": "Delete non-existent todo. Expected: 404 Not Found"
+      },
+      "response": []
+    }
+  ]
+}
