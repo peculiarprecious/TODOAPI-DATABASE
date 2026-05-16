@@ -20,11 +20,68 @@ ensuring todos are stored in database.
 
 This project uses Entity Framework Core with SQL Server LocalDB.
 
+## Database Setup & Migrations
+
+### Connection String
+The database connection is configured in `appsettings.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TodoApiDb;Trusted_Connection=True;"
+  }
+}
+```
+
+### Prerequisites
+Make sure you have Entity Framework Core tools installed:
+```cmd
+dotnet tool install --global dotnet-ef
+```
+
+### How to Run Migrations
+
+1. Create the migration (only needed once or when model changes)
+```cmd
+dotnet ef migrations add InitialCreate
+```
+
+2. Apply migration to create the database
+```cmd
+dotnet ef database update
+```
+
+3. Verify database was created in SSMS
+   - Open SQL Server Management Studio
+   - Connect to: `(localdb)\mssqllocaldb`
+   - Look for `TodoApiDb` under Databases
+   - Navigate to: `Tables → dbo.TodoItems`
+
+### What Migrations Do
+| Command | What it does |
+|---|---|
+| `migrations add InitialCreate` | Creates migration files from your Model |
+| `database update` | Runs migration and creates database tables |
+
+### If You Change the Model
+When you add or modify properties in `TodoItem.cs`:
+```cmd
+dotnet ef migrations add YourMigrationName
+dotnet ef database update
+```
+
 ### Check Data in SSMS
 1. Open SQL Server Management Studio
 2. Connect to: (localdb)\mssqllocaldb
 3. Navigate to: Databases → TodoApiDb → Tables → dbo.TodoItems
 4. Right-click → Select Top 1000 Rows
+
+### Verify Data in SSMS
+After posting todos you can verify data was saved:
+```sql
+USE TodoApiDb;
+SELECT * FROM TodoItems;
+```
 
 ## Project Structure
 
