@@ -63,6 +63,8 @@ dotnet ef database update
 | `migrations add InitialCreate` | Creates migration files from your Model |
 | `database update` | Runs migration and creates database tables |
 
+![alt text](database-structure.png)
+![alt text](ef-initial-creation.png)
 
 ### If You Change the Model
 When you add or modify properties in `TodoItem.cs`:
